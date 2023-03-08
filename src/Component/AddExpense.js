@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import {
   CardBody,
   Dropdown,
@@ -20,6 +21,7 @@ import { addExpense } from "../Services/Expense_Service"
 import { toast } from "react-toastify";
 
 const AddExpense = () => {
+  const navigate = useNavigate();
   const [expense, setExpense] = useState({
     amount: "",
     date: "",
@@ -59,6 +61,7 @@ const AddExpense = () => {
           categoryType: "",
         });
       })
+      navigate("/expense")
       .catch((error) => {
         console.log(error);
         console.log("Error log");
@@ -71,7 +74,7 @@ const AddExpense = () => {
         <Col sm={{ size: 6, offset: 3 }}>
           <Card>
             <CardHeader>
-              <h2 style={{ color: "black" }} className="text-center">
+              <h2 style={{ color: "cadetblue" }} className="text-center">
                 ADD EXPENSE
               </h2>
             </CardHeader>

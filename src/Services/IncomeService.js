@@ -6,8 +6,8 @@ class IncomeService{
         return axios.get(Income_API_BASE_URL+"/income/getincome");
     }
 
-    getIncomeById(incomeId){
-        return axios.get(Income_API_BASE_URL+"/income/getincomebyid/"+ incomeId)
+    getIncomeById(id){
+        return axios.get(Income_API_BASE_URL+"/income/getincomebyid/"+ id)
     }
 
     updateIncome(income){

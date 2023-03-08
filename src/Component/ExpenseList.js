@@ -1,38 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import IncomeService from '../Services/IncomeService';
+import ExpenseService from '../Services/ExpenseService'
 import { useNavigate } from 'react-router-dom';
 
-const IncomeList = (props) => {
-  const [income, setIncome] = useState([]);
+const ExpenseList = (props) => {
+  const [expense, setExpense] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    IncomeService.getincome().then((res) => {
-      setIncome(res.data);
+    ExpenseService.getExpense().then((res) => {
+        setExpense(res.data);
     });
   }, []);
-
-  const addIncome = () => {
-    navigate('/addincome');
+  const addExpense = () => {
+    navigate('/addexpense');
   };
 
-  const editIncome = (id) => {
-    navigate(`/updateincome/${id}`);
+  const editExpense = (id) => {
+    navigate(`/updateexpense/${id}`);
   };
 
-  const deleteIncome = (id) => {
-    IncomeService.deleteincome(id).then(() => {
-      setIncome(income.filter((income) => income.id !== id));
+  const deleteExpense = (id) => {
+    ExpenseService.deleteExpense(id).then(() => {
+      setExpense(expense.filter((expense) => expense.id !== id));
     });
   };
 
   return (
     <div>
-      <h2 className="text-center" style={{color:'cadetblue'}}>INCOME LIST</h2>
+      <h2 className="text-center" style={{color:'cadetblue'}}>EXPENSE LIST</h2>
       <div className="row">
-        <button className="btn btn-primary" onClick={addIncome}>
-          Add Income
+        <button className="btn btn-primary" onClick={addExpense}>
+          Add Expense
         </button>
+        <br></br>
       </div>
       <div className="row">
         <table className="table table-striped table-bordered">
@@ -46,19 +46,19 @@ const IncomeList = (props) => {
             </tr>
           </thead>
           <tbody>
-            {income.map((incomes) => (
-              <tr key={incomes.id}>
-                <td>{incomes.amount}</td>
-                <td>{incomes.date}</td>
-                <td>{incomes.description}</td>
-                <td>{incomes.categoryType}</td>
+            {expense.map((expenses) => (
+              <tr key={expenses.Expenseid}>
+                <td>{expenses.amount}</td>
+                <td>{expenses.date}</td>
+                <td>{expenses.description}</td>
+                <td>{expenses.categoryType}</td>
                 <td>
                   <button
-                    onClick={() => editIncome(incomes.id)}
+                    onClick={() => editExpense(expenses.id)}
                     className="btn btn-info">Update
                   </button>
                   <button style={{marginLeft:"10px"}}
-                    onClick={() => deleteIncome(incomes.id)}
+                    onClick={() => deleteExpense(expenses.id)}
                     className="btn btn-danger">Delete
                   </button>
                 </td>
@@ -71,4 +71,4 @@ const IncomeList = (props) => {
   );
 };
 
-export default IncomeList;
+export default ExpenseList;

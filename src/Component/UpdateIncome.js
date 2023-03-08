@@ -1,108 +1,95 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react';
 import IncomeService from '../Services/IncomeService';
+import { useNavigate, useParams } from 'react-router-dom';
 
-class UpdateIncome extends Component {
-    constructor(props) {
-        super(props)
+const UpdateIncome = () => {
+  const [amount, setAmount] = useState('');
+  const [date, setDate] = useState('');
+  const [description, setDescription] = useState('');
+  const [categoryType, setCategoryType] = useState('');
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-        this.state = {
-            id: this.props.match.params.id,
-            amount: "",
-            date: "",
-            description: "",
-            categoryType: "",
-        }
-        this.changeamountHandler = this.changeamountHandler.bind(this);
-        this.changedateHandler = this.changedateHandler.bind(this);
-        this.changedescriptionHandler = this.changedescriptionHandler.bind(this);
-        this.changecategoryTypeHandler = this.changecategoryTypeHandler.bind(this);
-        this.updateIncome = this.updateEIncome.bind(this);
-    }
+  useEffect(() => {
+    IncomeService.getIncomeById(id).then((res) => {
+      setAmount(res.data.amount);
+      setDate(res.data.date);
+      setDescription(res.data.description);
+      setCategoryType(res.data.categoryType);
+    });
+  }, [id]);
 
-    componentDidMount(){
-        IncomeService.getIncomeById(this.state.id).then( (res) =>{
-            let income = res.data;
-            this.setState({amount: income.amount,
-                date: income.date,
-                description : income.description,
-                categoryType: income.categoryType
+  const updateIncome = (e) => {
+    e.preventDefault();
+    const updatedIncome = {
+      id: id,
+      amount: amount,
+      date: date,
+      description: description,
+      categoryType: categoryType
+    };
+    IncomeService.updateIncome(updatedIncome).then(() => {
+      navigate('/income');
+    });
+  };
 
-            });
-        });
-    }
+  return (
+    <div>
+      <h2 className="text-center">Update Income</h2>
+      <form onSubmit={updateIncome}>
+        <div className="form-group">
+          <label>Amount:</label>
+          <input
+            type="number"
+            className="form-control"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+        </div>
 
-    updateIncome = (e) => {
-        e.preventDefault();
-        let income = {amount: this.state.amount, date: this.state.date, description: this.state.description,categoryType:this.state.categoryType};
-        console.log('income => ' + JSON.stringify(income));
-        console.log('id => ' + JSON.stringify(this.state.id));
-        IncomeService.updateIncome(income, this.state.id).then( res => {
-            this.props.history.push('/employees');
-        });
-    }
-    
-    changeamountHandler= (event) => {
-        this.setState({amount: event.target.value});
-    }
+        <div className="form-group">
+          <label>Date:</label>
+          <input
+            type="text"
+            className="form-control"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </div>
 
-    changedateHandler= (event) => {
-        this.setState({date: event.target.value});
-    }
+        <div className="form-group">
+          <label>Description:</label>
+          <input
+            type="text"
+            className="form-control"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
 
-    changedescriptionHandler= (event) => {
-        this.setState({description: event.target.value});
-    }
+        <div className="form-group">
+          <label>Category:</label>
+          <select
+            className="form-control"
+            value={categoryType}
+            onChange={(e) => setCategoryType(e.target.value)}
+          >
+            <option value="">--Select--</option>
+            <option value="SALARY">Salary</option>
+            <option value="INVESTMENT">INVESTMENT</option>
+            <option value="BONUS">BONUS</option>
+            <option value="INTREST">INTREST</option>
+            <option value="RENTALINCOME">RENTALINCOME</option>
+            <option value="OTHER">OTHER</option>
+          </select>
+        </div>
 
-    changecategoryTypeHandler= (event) => {
-        this.setState({categoryType: event.target.value});
-    }
-
-    cancel(){
-        this.props.history.push('/employees');
-    }
-
-    render() {
-        return (
-            <div>
-                <br></br>
-                   <div className = "container">
-                        <div className = "row">
-                            <div className = "card col-md-6 offset-md-3 offset-md-3">
-                                <h3 className="text-center">Update Income</h3>
-                                <div className = "card-body">
-                                    <form>
-                                        <div className = "form-group">
-                                            <label> Amount: </label>
-                                            <input placeholder="Amount" name="amount" className="form-control" 
-                                                value={this.state.amount} onChange={this.changeamountHandler}/>
-                                        </div>
-                                        <div className = "form-group">
-                                            <label> Date: </label>
-                                            <input placeholder="Date" name="date" className="form-control" 
-                                                value={this.state.date} onChange={this.changedateHandler}/>
-                                        </div>
-                                        <div className = "form-group">
-                                            <label> Description: </label>
-                                            <input placeholder="Description" name="description" className="form-control" 
-                                                value={this.state.description} onChange={this.changedescriptionHandler}/>
-                                        </div>
-                                        <div className = "form-group">
-                                            <label> Category Type: </label>
-                                            <input placeholder=" Category Type" name="categoryType" className="form-control" 
-                                                value={this.state.categoryType} onChange={this.changecategoryTypeHandler}/>
-                                        </div>
-
-                                        <button className="btn btn-success" onClick={this.updateIncome}>Save</button>
-                                        <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Cancel</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                   </div>
-            </div>
-        )
-    }
-}
+        <button type="submit" className="btn btn-primary">
+          Update
+        </button>
+      </form>
+    </div>
+  );
+};
 
 export default UpdateIncome;

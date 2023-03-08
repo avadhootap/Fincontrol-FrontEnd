@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import {
   CardBody,
   Dropdown,
@@ -20,6 +21,8 @@ import { addIncome } from "../Services/Income_Service";
 import { toast } from "react-toastify";
 
 const AddIncome = () => {
+
+  const navigate = useNavigate();
   const [income, setIncome] = useState({
     amount: "",
     date: "",
@@ -58,6 +61,8 @@ const AddIncome = () => {
           description: "",
           categoryType: "",
         });
+        navigate("/income")
+
       })
       .catch((error) => {
         console.log(error);
@@ -71,8 +76,8 @@ const AddIncome = () => {
         <Col sm={{ size: 6, offset: 3 }}>
           <Card>
             <CardHeader>
-              <h2 style={{ color: "black" }} className="text-center">
-                Add Income
+              <h2 style={{ color: "cadetblue"}} className="text-center">
+                ADD INCOME
               </h2>
             </CardHeader>
             <CardBody>

@@ -21,6 +21,9 @@ import { addExpense } from "../Services/Expense_Service"
 import { toast } from "react-toastify";
 
 const AddExpense = () => {
+
+  const user = JSON.parse(localStorage.getItem('data'));
+  const id = user.dto.id;
   const navigate = useNavigate();
   const [expense, setExpense] = useState({
     amount: "",
@@ -46,10 +49,14 @@ const AddExpense = () => {
     });
   };
 
+  const back=()=>{
+    navigate('/expense')
+  }
+
   const submitForm = (event) => {
     event.preventDefault();
     console.log(expense);
-    addExpense(expense)
+    addExpense(id,expense)
       .then((response) => {
         console.log(response);
         console.log("Success log");
@@ -69,7 +76,7 @@ const AddExpense = () => {
   };
 
   return (
-    <Container>
+    <Container >
       <Row className="mt-4">
         <Col sm={{ size: 6, offset: 3 }}>
           <Card>
@@ -95,7 +102,7 @@ const AddExpense = () => {
                   <Label for="date">Enter Date</Label>
                   <Input
                     type="text"
-                    placeholder="Enter here"
+                    placeholder="Enter Date"
                     id="date"
                     name="date"
                     onChange={(e) => handleChange(e, "date")}
@@ -106,7 +113,7 @@ const AddExpense = () => {
                   <Label for="description">Description</Label>
                   <Input
                     type="text"
-                    placeholder="Enter here"
+                    placeholder="Enter Description"
                     id="description"
                     name="description"
                     onChange={(e) => handleChange(e, "description")}
@@ -321,6 +328,9 @@ const AddExpense = () => {
               </Button>{" "}
               <Button color="warning" onClick={resetExpense}>
                 Reset
+              </Button>{" "}
+              <Button color="dark" onClick={back}>
+                Back
               </Button>
             </div>
           </Form>

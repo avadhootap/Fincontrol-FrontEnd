@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CardBody, CardHeader, FormGroup, Input, Label,Button, Card, Container, Form, Row, Col } from "reactstrap";
 import { useNavigate } from 'react-router-dom';
 import { signUp } from "../Services/user_service";
@@ -31,9 +31,17 @@ const SignUp=()=>{
         })
     }
 
+    const login=()=>{
+        navigate('/login')
+    }
+
     const submitForm=(event)=>{
         event.preventDefault()
         console.log(user)
+        if(user.firstName==='' || user.lastname===''  || user.city==='' || user.email==='' || user.password==='' || user.confirmPassword===''){
+            toast.error("Field is Required !!")
+            return;
+        }
         signUp(user).then((response)=>{
             console.log(response);
             console.log("Success log");
@@ -47,6 +55,7 @@ const SignUp=()=>{
                 confirmPassword:''
             })
             navigate('/login');
+            
         }).catch((error)=>{
             console.log(error);
             console.log("Error log")
@@ -67,43 +76,44 @@ const SignUp=()=>{
                     <Form onSubmit={submitForm} >
                         <FormGroup>
                             <Label for="firstName">Enter FirstName</Label>
-                            <Input type="text" placeholder="Enter here" id="firstName" name="firstName"
+                            <Input type="text" placeholder="Enter Firstname" id="firstName" name="firstName"
                             onChange={(e)=>handleChange(e,'firstName')} value={user.firstName}
                             />
                         </FormGroup>
                         <FormGroup>
                             <Label for="lastname">Enter LastName</Label>
-                            <Input type="text" placeholder="Enter here" id="lastname" name="lastname"
+                            <Input type="text" placeholder="Enter Lastname" id="lastname" name="lastname"
                             onChange={(e)=>handleChange(e,'lastname')} value={user.lastname}
                             />
                         </FormGroup>
                         <FormGroup>
                             <Label for="city">City</Label>
-                            <Input type="text" placeholder="Enter here" id="city" name="city"
+                            <Input type="text" placeholder="Enter City" id="city" name="city"
                             onChange={(e)=>handleChange(e,'city')} value={user.city}
                             />
                         </FormGroup>
                         <FormGroup>
                             <Label for="email">Email</Label>
-                            <Input type="email" placeholder="Enter here" id="email" name="email"
+                            <Input type="email" placeholder="Enter Email" id="email" name="email"
                             onChange={(e)=>handleChange(e,'email')} value={user.email}
                             />
                         </FormGroup>
                         <FormGroup>
                             <Label for="password">Password</Label>
-                            <Input type="password" placeholder="Enter here" id="password" name="password"
+                            <Input type="password" placeholder="Enter Password" id="password" name="password"
                             onChange={(e)=>handleChange(e,'password')} value={user.password}
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="confirmPassword">Password</Label>
-                            <Input type="password" placeholder="Enter here" id="confirmPassword" name="confirmPassword"
+                            <Label for="confirmPassword">Confirm Password</Label>
+                            <Input type="password" placeholder="Enter Confirm Password" id="confirmPassword" name="confirmPassword"
                             onChange={(e)=>handleChange(e,'confirmPassword')} value={user.confirmPassword}
                             />
                         </FormGroup>
                         <Container className="text-center">
                            <Button color="success">SignUp</Button>&nbsp;&nbsp;
-                           <Button onClick={resetuser} color="warning" type="reset" >Reset</Button>
+                           <Button onClick={resetuser} color="warning" type="reset" >Reset</Button>&nbsp;&nbsp;
+                           <Button onClick={login} color="success">Login</Button>
                         </Container>
                     </Form>
                 </CardBody>

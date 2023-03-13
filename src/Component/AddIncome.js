@@ -21,7 +21,8 @@ import { addIncome } from "../Services/Income_Service";
 import { toast } from "react-toastify";
 
 const AddIncome = () => {
-
+  const user = JSON.parse(localStorage.getItem('data'));
+  const id = user.dto.id;
   const navigate = useNavigate();
   const [income, setIncome] = useState({
     amount: "",
@@ -47,10 +48,14 @@ const AddIncome = () => {
     });
   };
 
+  const back=()=>{
+    navigate('/income')
+  }
+
   const submitForm = (event) => {
     event.preventDefault();
     console.log(income);
-    addIncome(income)
+    addIncome(id,income)
       .then((response) => {
         console.log(response);
         console.log("Success log");
@@ -71,6 +76,7 @@ const AddIncome = () => {
   };
 
   return (
+    <Container>
     <Container>
       <Row className="mt-4">
         <Col sm={{ size: 6, offset: 3 }}>
@@ -159,6 +165,9 @@ const AddIncome = () => {
               </Button>{" "}
               <Button color="warning" onClick={resetIncome}>
                 Reset
+              </Button>{" "}
+              <Button color="dark" onClick={back}>
+                Back
               </Button>
             </div>
           </Form>
@@ -166,6 +175,7 @@ const AddIncome = () => {
       </Card>
     </Col>
   </Row>
+</Container>
 </Container>
   )
 }

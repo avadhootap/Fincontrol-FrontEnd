@@ -35,7 +35,7 @@ const UpdateIncome = () => {
 
   return (
     <div>
-      <h2 className="text-center">Update Income</h2>
+      <h2 className="text-center" style={{ color: 'cadetblue', marginTop:'20px' }}>UPDATE INCOME</h2>
       <form onSubmit={updateIncome}>
         <div className="form-group">
           <label>Amount:</label>
